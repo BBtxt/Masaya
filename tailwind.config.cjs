@@ -7,7 +7,7 @@ module.exports = {
 	theme: {
 		extend: {
 			fontFamily: {
-				sans: ['Erica One', ...defaultTheme.fontFamily.sans],
+				erica: ['Erica One', ...defaultTheme.fontFamily.sans],
 			}
 		},
 	},
