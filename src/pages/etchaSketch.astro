@@ -5,98 +5,135 @@ import Layout from "../layouts/Layout.astro";
 <Layout title="Etch-A-Sketch">
   <main>
     <div class="min-h-min flex flex-col justify-center items-center">
-      <canvas 
+      <div class="font-mono font-bold text-xl">draw something!</div>
+      <canvas
         id="canvas"
         width="800"
         height="800"
         class="bg-gray-100 border-4 border-blue-300 rounded-lg shadow-lg h-500px w-800px"
       >
-      </canvas >
-      <div class="flex justify-start mt-8">
-        <button id="clear">Clear</button>
+      </canvas>
+      <div class="flex justify-around mt-8 mb-4">
+        <button id="clear" class="mx-3 px-2  font-mono font-bold text-lg bg-blue-300/50 border-3 rounded-lg transition ease-in-out delay-100 duration-300 hover:bg-blue-300/80 hover:-translate-y-1 hover:scale-110 ">Clear</button>
+        <button id="undo" class="mx-3 px-2  font-mono font-bold text-lg bg-blue-300/50 border-3 rounded-lg transition ease-in-out delay-100 duration-300 hover:bg-blue-300/80 hover:-translate-y-1 hover:scale-110 ">Undo</button>
       </div>
-      <div class="slidecontainer">
-        <input type="range" min="5" max="50" value="10" class="slider" id="myRange">
+      <div>
+        <a href="/home"
+        class="mx-3 px-2 py-2 font-mono font-bold text-lg  border-3 rounded-lg transition ease-in-out delay-100 duration-300 hover:bg-violet-400/80 hover:-translate-y-1 hover:scale-110 ">🚀Home🌎</a>
       </div>
+     
     </div>
   </main>
-    <script>
-        const canvas = document.querySelector('#canvas');
-        const ctx = canvas.getContext('2d');
-        const shakeButton = document.getElementById('clear');
-        const { width, height } = canvas;
-        const MOVE_AMOUNT = 10;
-        
+  <script>
+    const canvas = document.querySelector("#canvas");
+    const ctx = canvas.getContext("2d");
+    const shakeButton = document.getElementById("clear");
+    const undoButton = document.getElementById("undo");
+    const { width, height } = canvas;
+    const MOVE_AMOUNT = 10;
+    const drawingHistory = [];
 
-        //random starting point
-        let x = Math.floor(Math.random() * width);
-        let y = Math.floor(Math.random() * height);
-        ctx.lineJoin = 'round';
-        ctx.lineCap = 'round';
-        ctx.lineWidth = MOVE_AMOUNT;
-        // console.log(ctx);
+    //random starting point
+    let x = Math.floor(Math.random() * width);
+    let y = Math.floor(Math.random() * height);
+    ctx.lineJoin = "round";
+    ctx.lineCap = "round";
+    ctx.lineWidth = MOVE_AMOUNT;
 
-        ctx.beginPath();
-        ctx.moveTo(x, y);
-        ctx.lineTo(x, y);
-        ctx.stroke();
-
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.lineTo(x, y);
+    ctx.stroke();
 
     function draw({ key }) {
-        ctx.beginPath();
-        ctx.moveTo(x, y);
+      ctx.beginPath();
+      ctx.moveTo(x, y);
 
-        switch (key) {
-            case 'ArrowUp':
-                y -= MOVE_AMOUNT;
-                break;
-            case 'ArrowDown':
-                y += MOVE_AMOUNT;
-                break;
-            case 'ArrowLeft':
-                x -= MOVE_AMOUNT;
-                break;
-            case 'ArrowRight':
-                x += MOVE_AMOUNT;
-                break;
-            default:
-                break;
-        }
-        ctx.lineTo(x, y);
-        ctx.stroke();
+      switch (key) {
+        case "ArrowUp":
+          y -= MOVE_AMOUNT;
+          break;
+        case "ArrowDown":
+          y += MOVE_AMOUNT;
+          break;
+        case "ArrowLeft":
+          x -= MOVE_AMOUNT;
+          break;
+        case "ArrowRight":
+          x += MOVE_AMOUNT;
+          break;
+        default:
+          break;
+      }
+
+      ctx.lineTo(x, y);
+      ctx.stroke();
+      drawingHistory.push({ x, y });
     }
 
     function handleKey(e) {
-        if (e.key.includes('Arrow')) {
-            e.preventDefault();
-            draw({ key: e.key });
-            // console.log("handling key");
-            // console.log(e.key);
-        }
+      if (e.key.includes("Arrow")) {
+        e.preventDefault();
+        draw({ key: e.key });
+      } else if (e.key === "c") {
+
+        setTimeout(clearCanvas, 1000);
+      } else if (e.key === "u") {
+        e.preventDefault();
+        undo();
+      }
     }
-     function clearCanvas(){
-      canvas.classList.add('shake');
+    function clearCanvas() {
+      canvas.classList.add("shake");
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      console.log('clearing')
       canvas.addEventListener(
-        'animationend',
+        "animationend",
         function () {
-          canvas.classList.remove('shake');
+          canvas.classList.remove("shake");
         },
         { once: true }
-        
       );
-     }
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      ctx.lineTo(x, y);
+      ctx.stroke();
+      drawingHistory.length = 0;
+    }
 
-    window.addEventListener('keydown', handleKey);
-    shakeButton.addEventListener('click', clearCanvas);
+    function undo() {
+      if (drawingHistory.length > 2) {
+        drawingHistory.pop();
 
-    </script>
+        // Clear the canvas
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Redraw the drawing history
+        drawingHistory.forEach((point, index) => {
+          if (index === 0) {
+            ctx.beginPath();
+            ctx.moveTo(point.x, point.y);
+          } else {
+            ctx.lineTo(point.x, point.y);
+          }
+          ctx.stroke();
+        });
+
+        // Update the current position (x, y) to the previous move
+        const lastMove = drawingHistory[drawingHistory.length - 1];
+        x = lastMove.x;
+        y = lastMove.y;
+      }
+    }
+
+    window.addEventListener("keydown", handleKey);
+    shakeButton.addEventListener("click", clearCanvas);
+    undoButton.addEventListener("click", undo);
+  </script>
 </Layout>
 <style>
   body {
     margin: 0;
-    background: #373764;
+    background: ;
     color: white;
   }
   canvas.shake {
