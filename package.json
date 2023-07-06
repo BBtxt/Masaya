@@ -15,5 +15,8 @@
     "@fontsource/erica-one": "^5.0.3",
     "astro": "^2.6.4",
     "tailwindcss": "^3.3.2"
+  },
+  "devDependencies": {
+    
   }
 }

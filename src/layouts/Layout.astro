@@ -1,41 +1,44 @@
 ---
 export interface Props {
-	title: string;
+  title: string;
 }
 
 const { title } = Astro.props;
-import '@fontsource/erica-one';
+import "@fontsource/erica-one";
 ---
 
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="Are you Happy?" content="FUNTIME WEBSITE">
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>{title}</title>
-	</head>
-	<body>
-		<slot />
-	</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="Are you Happy?" content="FUNTIME WEBSITE" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <slot />
+  </body>
 </html>
 <style is:global>
-	:root {
-		--accent: 124, 58, 237;
-		--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%);
-	}
-	body {
-		margin: 0;
-		font-family: 'Roboto', sans-serif;
-		background: #27272a;
-		color: white;
-	}
-	main {
-		margin: auto;
-		padding: 1.5rem;
-
-	}
-	
+  :root {
+    --accent: 124, 58, 237;
+    --accent-gradient: linear-gradient(
+      45deg,
+      rgb(var(--accent)),
+      #da62c4 30%,
+      white 60%
+    );
+  }
+  body {
+    margin: 0;
+    font-family: "Roboto", sans-serif;
+    background: #27272a;
+    color: white;
+  }
+  main {
+    margin: auto;
+    padding: 1.5rem;
+  }
 </style>

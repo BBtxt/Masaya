@@ -3,8 +3,126 @@ import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout title="Etch-A-Sketch">
-    <main>
-    hey
-    </main>
-    
+  <main>
+    <div class="min-h-min flex flex-col justify-center items-center">
+      <canvas 
+        id="canvas"
+        width="800"
+        height="800"
+        class="bg-gray-100 border-4 border-blue-300 rounded-lg shadow-lg h-500px w-800px"
+      >
+      </canvas >
+      <div class="flex justify-start mt-8">
+        <button id="clear">Clear</button>
+      </div>
+      <div class="slidecontainer">
+        <input type="range" min="5" max="50" value="10" class="slider" id="myRange">
+      </div>
+    </div>
+  </main>
+    <script>
+        const canvas = document.querySelector('#canvas');
+        const ctx = canvas.getContext('2d');
+        const shakeButton = document.getElementById('clear');
+        const { width, height } = canvas;
+        const MOVE_AMOUNT = 10;
+        
+
+        //random starting point
+        let x = Math.floor(Math.random() * width);
+        let y = Math.floor(Math.random() * height);
+        ctx.lineJoin = 'round';
+        ctx.lineCap = 'round';
+        ctx.lineWidth = MOVE_AMOUNT;
+        // console.log(ctx);
+
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(x, y);
+        ctx.stroke();
+
+
+    function draw({ key }) {
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+
+        switch (key) {
+            case 'ArrowUp':
+                y -= MOVE_AMOUNT;
+                break;
+            case 'ArrowDown':
+                y += MOVE_AMOUNT;
+                break;
+            case 'ArrowLeft':
+                x -= MOVE_AMOUNT;
+                break;
+            case 'ArrowRight':
+                x += MOVE_AMOUNT;
+                break;
+            default:
+                break;
+        }
+        ctx.lineTo(x, y);
+        ctx.stroke();
+    }
+
+    function handleKey(e) {
+        if (e.key.includes('Arrow')) {
+            e.preventDefault();
+            draw({ key: e.key });
+            // console.log("handling key");
+            // console.log(e.key);
+        }
+    }
+     function clearCanvas(){
+      canvas.classList.add('shake');
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      console.log('clearing')
+      canvas.addEventListener(
+        'animationend',
+        function () {
+          canvas.classList.remove('shake');
+        },
+        { once: true }
+        
+      );
+     }
+
+    window.addEventListener('keydown', handleKey);
+    shakeButton.addEventListener('click', clearCanvas);
+
+    </script>
 </Layout>
+<style>
+  body {
+    margin: 0;
+    background: #373764;
+    color: white;
+  }
+  canvas.shake {
+    animation: shake 0.5s linear 1;
+  }
+
+  @keyframes shake {
+    10%,
+    90% {
+      transform: translate3d(-1px, 0, 0);
+    }
+
+    20%,
+    80% {
+      transform: translate3d(2px, 0, 0);
+    }
+
+    30%,
+    50%,
+    70% {
+      transform: translate3d(-4px, 0, 0);
+    }
+
+    40%,
+    60% {
+      transform: translate3d(4px, 0, 0);
+    }
+  }
+</style>

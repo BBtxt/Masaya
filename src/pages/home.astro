@@ -1,32 +1,34 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Card from '../components/Card.astro';
+import Layout from "../layouts/Layout.astro";
+import Card from "../components/Card.astro";
 ---
 
 <Layout title="HEY!">
-	<main>
-		<h1>Masaya means  <span class="text-gradient">Happy</span> in Taglog 🇵🇭</h1>
-		<div>
-            <p>
-                Below are a collection of fun likkle projects that I hope you'll have fun with.
-            </p>
-        </div>
-        
-		<ul >
-		<Card
-            title="🎨 Etch-A-Sketch"
-            body="This one for the old heads who grew up with physical toys"
-            href="/etchaSketch"/>
-		</ul>
-	</main>
+  <main>
+    <h1>Masaya means <span class="text-gradient">Happy</span> in Taglog 🇵🇭</h1>
+    <div>
+      <p>
+        Below are a collection of fun likkle projects that I hope you'll have
+        fun with.
+      </p>
+    </div>
+
+    <ul>
+      <Card
+        title="🎨 Etch-A-Sketch"
+        body="This one for the old heads who grew up with physical toys"
+        href="/etchaSketch"
+      />
+    </ul>
+  </main>
 </Layout>
 
 <style>
-	main {
-		margin: auto;
-		padding: 1.5rem;
-		max-width: 60ch;
-	}
+  main {
+    margin: auto;
+    padding: 1.5rem;
+    max-width: 60ch;
+  }
 </style>
 <!-- 
 h1 {
